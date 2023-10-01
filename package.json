@@ -1,0 +1,24 @@
+{
+  "name": "nodeapi1",
+  "version": "1.0.0",
+  "description": "Simple Nod API",
+  "main": "server.js",
+  "scripts": {
+    "test": "jest",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bluejet80/nodeAPI1.git"
+  },
+  "keywords": [
+    "NodeJS",
+    "API"
+  ],
+  "author": "Jarett Young",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bluejet80/nodeAPI1/issues"
+  },
+  "homepage": "https://github.com/bluejet80/nodeAPI1#readme"
+}
