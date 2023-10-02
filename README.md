@@ -155,6 +155,72 @@ To update an individual package
 
 `npm update package-name`
 
+## How to get the database to work
+
+So you will be running MongoDb from within a docker container
+
+There are somethings you will need to do to get the application to run
+
+0. make sure the connection string is right and it is in the file `config.env`
+
+`DATABASE=mongodb://bluejet:Password@172.18.0.2:27017/natoursdb`
+
+1. Find out what IP Address the docker container with MongoDB is running at?  
+
+`sudo docker container inspect <container_name> | grep IPAddress`
+
+2. Login in to the container and setup a user and password for authentication  
+There is normally no authentication on MongoDB setup by default in the container  
+I'm sure there is a way to get it to setup authentication from the beginning  
+but I'm not sure how right now. 
+
+Connect to the docker container
+`sudo docker exec -it <container_name> /bin/bash`
+
+To Login and setup a user with authentication you must do this:
+
+To login to the mongo shell type `mongosh -u "admin" -p`
+It will prompt for a password enter the one you set the container up with.
+
+Then once there, select the `admin` database to setup authentication on:
+
+`use admin`
+
+Then add authentication
+
+```
+    db.createUser(
+        {
+            user: "bluejet",
+            pwd: "Password",
+            roles[
+                { role: "userAdminAnyDatabase", db: "admin"},
+                { role: "readWriteAnyDatabase", db: "admin"}
+                ]
+        })
+```
+This should give you a `{ ok: 1 }` response.
+
+So that just made it to where you can login using the blujet user so  
+go ahead a login with the bluejet user...
+
+And then switch to the database that you want to connect to and add data.
+
+`use natoursdb`
+
+then create the user on that database:
+
+`db.createUser({user:"bluejet",pwd:"Password",roles:[{role: "readWrite",db: "natoursdb"}]})`
+
+then you will get a `{ ok: 1 }` response.
+
+logout, then using docker restart the database and then you should be able to  
+poulate the data.
+
+
+
+Then Log out and see if you can populate the database.
+
 
 ## How to Run your project
 
